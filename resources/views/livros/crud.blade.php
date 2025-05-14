@@ -169,4 +169,23 @@
 
                 });
             </script>
+            <script>
+                $('#isbn').on('blur', function () {
+                    let isbn = $(this).val();
+
+                    if (isbn.length > 0) {
+                        $.get('/livros/buscar-isbn', { isbn: isbn }, function (data) {
+                            if (data.titulo) $('#titulo').val(data.titulo);
+                            if (data.autor) $('#autor_id option:contains("' + data.autor + '")').prop('selected', true);
+                            if (data.editora) $('#editora_id option:contains("' + data.editora + '")').prop('selected', true);
+                            if (data.ano) $('#ano').val(data.ano);
+                            if (data.paginas) $('#paginas').val(data.paginas);
+                            if (data.capa) $('#capa').attr('src', data.capa);
+                        }).fail(function (err) {
+                            alert('Livro não encontrado ou erro na requisição.');
+                        });
+                    }
+                });
+            </script>
+
         @stop

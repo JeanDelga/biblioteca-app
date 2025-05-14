@@ -13,4 +13,17 @@ class ClientesController extends Controller
         return response()->json($clientes);
     }
 
+    public function getClieteById($id)
+    {
+        $cliente = Cliente::find($id);
+        if ($cliente) {
+            return response()->json($cliente);
+        } else {
+            return response()->json(['message' => 'Cliente not found'], 404);
+        }
+    }
+
 }
+
+
+

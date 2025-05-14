@@ -151,4 +151,36 @@ class LivroController extends Controller
 
         return view('livros.index');
     }
+
+    public function buscarPorIsbn(Request $request)
+    {
+    $isbn = $request->input('isbn');
+
+    if (!$isbn) {
+        return response()->json(['error' => 'ISBN não fornecido'], 400);
+    }
+
+    $response = Http::get("https://openlibrary.org/api/volumes/brief/isbn/{$isbn}.json");
+
+    if ($response->failed()) {
+        return response()->json(['error' => 'Erro ao buscar dados do livro'], 500);
+    }
+
+    $data = $response->json();
+
+    if (empty($data['records'])) {
+        return response()->json(['error' => 'Livro não encontrado'], 404);
+    }
+
+    $book = $data['records'][0]['data'];
+
+    return response()->json([
+        'titulo' => $book['title'] ?? '',
+        'autor' => $book['authors'][0]['name'] ?? '',
+        'editora' => $book['publishers'][0]['name'] ?? '',
+        'ano' => $book['publish_date'] ?? '',
+        'paginas' => $book['number_of_pages'] ?? '',
+        'capa' => $book['cover']['large'] ?? ''
+    ]);
+}
 }

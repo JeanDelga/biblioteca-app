@@ -15,3 +15,5 @@ Route::get('/teste', function () {
 });
 
 Route::get('/clientes', [ClientesController::class, 'getClientes']);
+
+Route::get('/clientes/{id}', [ClientesController::class, 'getClieteById']);

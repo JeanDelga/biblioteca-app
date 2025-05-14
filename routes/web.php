@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/consulta-cep', [ClienteController::class, 'consultaCep'])->name('consulta.cep');
 
-
-
 });
+
+Route::get('/livros/buscar-isbn', [LivroController::class, 'buscarPorIsbn']);
 
